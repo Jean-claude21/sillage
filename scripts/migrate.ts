@@ -5,7 +5,8 @@ import { Pool } from '@neondatabase/serverless';
 import { drizzle } from 'drizzle-orm/neon-serverless';
 import { migrate } from 'drizzle-orm/neon-serverless/migrator';
 
-if (existsSync('.env')) process.loadEnvFile('.env');
+// The local .env only when no database is given: never mix development values into production.
+if (!process.env.DATABASE_URL && !process.env.NETLIFY_DATABASE_URL && existsSync('.env')) process.loadEnvFile('.env');
 
 const url = process.env.DATABASE_URL ?? process.env.NETLIFY_DATABASE_URL;
 if (!url) {

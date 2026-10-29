@@ -75,11 +75,17 @@ Entonnoir conseillé dans Umami : `/` → `/catalogue` → `book.view` → `cart
 
 ## Mettre en ligne (Netlify)
 
-1. Site Netlify relié au dépôt GitHub, branche `main`.
-2. Netlify DB : `npx netlify db init` (Neon, fournit `NETLIFY_DATABASE_URL`).
-3. Variables : `BETTER_AUTH_SECRET`, `BETTER_AUTH_URL` (adresse du site), `ADMIN_EMAIL`,
-   `ADMIN_PASSWORD`, `SEED_DEMO=1` pour la démonstration, `VITE_UMAMI_*`.
-4. La construction lance les migrations puis le build (`netlify.toml`).
+En ligne : **https://sillage-boutique.netlify.app** (site `sillage-boutique`, compte `jean-claude21`).
+La maquette reste sur `sillage-librairie.netlify.app`, inchangée.
+
+- **Base** : projet Neon `sillage` (région `aws-us-east-2`, à côté des fonctions Netlify), branche `main`.
+- **Variables** : posées sur le site Netlify ; copie dans `F:/programmation/perso/.secrets/sillage.env`
+  (`DATABASE_URL`, `BETTER_AUTH_*`, `ADMIN_*`, `DEMO_CUSTOMER_PASSWORD`, `SEED_DEMO`, `PAYMENT_PROVIDER`,
+  `VITE_DEMO_MODE`, `NETLIFY_SITE_ID`).
+- **Publier** : `netlify deploy --build --prod --site <NETLIFY_SITE_ID>` (jeton dans `NETLIFY_AUTH_TOKEN`).
+  La construction applique les migrations puis le build (`netlify.toml`). Le dépôt n’est pas encore
+  relié pour le déploiement automatique depuis `main`.
+- **Vérifier en ligne** : `E2E_BASE_URL=https://sillage-boutique.netlify.app pnpm test:e2e tests/e2e/purchase.spec.ts`.
 
 ## Changer de marque
 
