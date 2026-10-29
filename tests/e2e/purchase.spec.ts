@@ -1,9 +1,12 @@
 import { expect, test } from '@playwright/test';
+import { hydrated } from './hydrated';
 
 // The whole purchase, as a reader does it: a book in the cart, the checkout, the test payment,
-// the confirmation. Runs against the local server (pnpm dev) with the demo catalogue.
+// the confirmation. Runs against pnpm dev, or the live site with E2E_BASE_URL. Each page is used
+// once hydrated(): the currency service keeps the network busy, so "networkidle" can wait forever.
 test('a reader buys a book and pays with Mobile Money', async ({ page }) => {
-  await page.goto('/livres/minuit-sur-le-fleuve', { waitUntil: 'networkidle' });
+  await page.goto('/livres/minuit-sur-le-fleuve', { waitUntil: 'load' });
+  await hydrated(page);
   await page.getByRole('button', { name: 'Augmenter la quantité' }).click();
   await page.getByRole('button', { name: 'Ajouter au panier', exact: true }).click();
   await expect(page.locator('#cart-count')).toHaveText('2');
@@ -22,7 +25,8 @@ test('a reader buys a book and pays with Mobile Money', async ({ page }) => {
   await page.getByRole('button', { name: /Commander et payer/ }).click();
 
   await expect(page).toHaveURL(/\/paiement\/SL-\d+/);
-  await page.waitForLoadState('networkidle');
+  await page.waitForLoadState('load');
+  await hydrated(page);
   await page.screenshot({ path: 'review/app-payment.png', fullPage: true });
   await page.getByRole('button', { name: /Confirmer le paiement/ }).click();
 
@@ -34,9 +38,11 @@ test('a reader buys a book and pays with Mobile Money', async ({ page }) => {
 });
 
 test('an order paid on delivery skips the payment page', async ({ page }) => {
-  await page.goto('/livres/carnet-creatif', { waitUntil: 'networkidle' });
+  await page.goto('/livres/carnet-creatif', { waitUntil: 'load' });
+  await hydrated(page);
   await page.getByRole('button', { name: 'Ajouter au panier', exact: true }).click();
-  await page.goto('/commande', { waitUntil: 'networkidle' });
+  await page.goto('/commande', { waitUntil: 'load' });
+  await hydrated(page);
   await page.locator('[name=name]').fill('Lectrice Test');
   await page.locator('input[name=email]').fill('lectrice.test@example.com');
   await page.locator('[name=phone]').fill('90 44 55 66');
