@@ -108,7 +108,8 @@ async function seedDemoReaders(db: Db): Promise<void> {
     d.setUTCDate(d.getUTCDate() - offset);
     const [h, min] = time.split(':').map(Number);
     d.setUTCHours(h ?? 9, min ?? 0, 0, 0);
-    return d;
+    // Early in the morning, "today 09:42" would be in the future: keep the same order, in the past.
+    return d.getTime() > Date.now() ? new Date(d.getTime() - 86_400_000) : d;
   };
   const demo = [
     { n: 1048, c: 'afi', at: day(0, '09:42'), pay: 'paid', method: 'mobile_money', del: 'a-preparer', items: ['maison-des-marees', 'etoiles-de-naya'], fee: 1500, zone: 'lome', area: 'Tokoin', city: 'Lomé', address: '12, rue Exemple · Tokoin, Lomé', courier: '', window: 'Demain · 09 h – 13 h', note: '' },

@@ -10,6 +10,8 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as shopLayoutRouteImport } from './routes/shop/layout'
+import { Route as adminLayoutRouteImport } from './routes/admin/layout'
+import { Route as accountLayoutRouteImport } from './routes/account/layout'
 import { Route as apiRobotsRouteImport } from './routes/api/robots'
 import { Route as apiSitemapRouteImport } from './routes/api/sitemap'
 import { Route as shopHomeRouteImport } from './routes/shop/home'
@@ -22,14 +24,44 @@ import { Route as shopPublishersRouteImport } from './routes/shop/publishers'
 import { Route as shopWishesRouteImport } from './routes/shop/wishes'
 import { Route as shopSignUpRouteImport } from './routes/shop/sign-up'
 import { Route as shopAboutRouteImport } from './routes/shop/about'
+import { Route as adminOverviewRouteImport } from './routes/admin/overview'
+import { Route as adminCatalogRouteImport } from './routes/admin/catalog'
+import { Route as adminCustomersRouteImport } from './routes/admin/customers'
+import { Route as adminOrdersRouteImport } from './routes/admin/orders'
+import { Route as adminContentRouteImport } from './routes/admin/content'
+import { Route as adminPublishersRouteImport } from './routes/admin/publishers'
+import { Route as adminDeliveriesRouteImport } from './routes/admin/deliveries'
+import { Route as adminPaymentsRouteImport } from './routes/admin/payments'
+import { Route as adminSettingsRouteImport } from './routes/admin/settings'
+import { Route as adminStocksRouteImport } from './routes/admin/stocks'
+import { Route as accountOverviewRouteImport } from './routes/account/overview'
+import { Route as accountAddressesRouteImport } from './routes/account/addresses'
+import { Route as accountSupportRouteImport } from './routes/account/support'
+import { Route as accountOrdersRouteImport } from './routes/account/orders'
+import { Route as accountWishesRouteImport } from './routes/account/wishes'
+import { Route as accountProfileRouteImport } from './routes/account/profile'
 import { Route as shopConfirmationRouteImport } from './routes/shop/confirmation'
 import { Route as shopBookRouteImport } from './routes/shop/book'
 import { Route as shopPaymentRouteImport } from './routes/shop/payment'
+import { Route as adminBookRouteImport } from './routes/admin/book'
+import { Route as adminCustomerRouteImport } from './routes/admin/customer'
+import { Route as adminOrderRouteImport } from './routes/admin/order'
 import { Route as apiAuthRouteImport } from './routes/api/auth'
 import { Route as apiPaymentReturnRouteImport } from './routes/api/payment-return'
+import { Route as accountOrderRouteImport } from './routes/account/order'
 
 const shopLayoutRoute = shopLayoutRouteImport.update({
   id: '/_shop',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const adminLayoutRoute = adminLayoutRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const accountLayoutRoute = accountLayoutRouteImport.update({
+  id: '/mon-compte',
+  path: '/mon-compte',
   getParentRoute: () => rootRouteImport,
 } as any)
 const apiRobotsRoute = apiRobotsRouteImport.update({
@@ -92,6 +124,86 @@ const shopAboutRoute = shopAboutRouteImport.update({
   path: '/maison',
   getParentRoute: () => shopLayoutRoute,
 } as any)
+const adminOverviewRoute = adminOverviewRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => adminLayoutRoute,
+} as any)
+const adminCatalogRoute = adminCatalogRouteImport.update({
+  id: '/catalogue',
+  path: '/catalogue',
+  getParentRoute: () => adminLayoutRoute,
+} as any)
+const adminCustomersRoute = adminCustomersRouteImport.update({
+  id: '/clients',
+  path: '/clients',
+  getParentRoute: () => adminLayoutRoute,
+} as any)
+const adminOrdersRoute = adminOrdersRouteImport.update({
+  id: '/commandes',
+  path: '/commandes',
+  getParentRoute: () => adminLayoutRoute,
+} as any)
+const adminContentRoute = adminContentRouteImport.update({
+  id: '/contenus',
+  path: '/contenus',
+  getParentRoute: () => adminLayoutRoute,
+} as any)
+const adminPublishersRoute = adminPublishersRouteImport.update({
+  id: '/editeurs',
+  path: '/editeurs',
+  getParentRoute: () => adminLayoutRoute,
+} as any)
+const adminDeliveriesRoute = adminDeliveriesRouteImport.update({
+  id: '/livraisons',
+  path: '/livraisons',
+  getParentRoute: () => adminLayoutRoute,
+} as any)
+const adminPaymentsRoute = adminPaymentsRouteImport.update({
+  id: '/paiements',
+  path: '/paiements',
+  getParentRoute: () => adminLayoutRoute,
+} as any)
+const adminSettingsRoute = adminSettingsRouteImport.update({
+  id: '/parametres',
+  path: '/parametres',
+  getParentRoute: () => adminLayoutRoute,
+} as any)
+const adminStocksRoute = adminStocksRouteImport.update({
+  id: '/stocks',
+  path: '/stocks',
+  getParentRoute: () => adminLayoutRoute,
+} as any)
+const accountOverviewRoute = accountOverviewRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => accountLayoutRoute,
+} as any)
+const accountAddressesRoute = accountAddressesRouteImport.update({
+  id: '/adresses',
+  path: '/adresses',
+  getParentRoute: () => accountLayoutRoute,
+} as any)
+const accountSupportRoute = accountSupportRouteImport.update({
+  id: '/aide',
+  path: '/aide',
+  getParentRoute: () => accountLayoutRoute,
+} as any)
+const accountOrdersRoute = accountOrdersRouteImport.update({
+  id: '/commandes',
+  path: '/commandes',
+  getParentRoute: () => accountLayoutRoute,
+} as any)
+const accountWishesRoute = accountWishesRouteImport.update({
+  id: '/favoris',
+  path: '/favoris',
+  getParentRoute: () => accountLayoutRoute,
+} as any)
+const accountProfileRoute = accountProfileRouteImport.update({
+  id: '/profil',
+  path: '/profil',
+  getParentRoute: () => accountLayoutRoute,
+} as any)
 const shopConfirmationRoute = shopConfirmationRouteImport.update({
   id: '/commande/$orderId',
   path: '/commande/$orderId',
@@ -107,6 +219,21 @@ const shopPaymentRoute = shopPaymentRouteImport.update({
   path: '/paiement/$orderId',
   getParentRoute: () => shopLayoutRoute,
 } as any)
+const adminBookRoute = adminBookRouteImport.update({
+  id: '/catalogue/$bookId',
+  path: '/catalogue/$bookId',
+  getParentRoute: () => adminLayoutRoute,
+} as any)
+const adminCustomerRoute = adminCustomerRouteImport.update({
+  id: '/clients/$customerId',
+  path: '/clients/$customerId',
+  getParentRoute: () => adminLayoutRoute,
+} as any)
+const adminOrderRoute = adminOrderRouteImport.update({
+  id: '/commandes/$orderId',
+  path: '/commandes/$orderId',
+  getParentRoute: () => adminLayoutRoute,
+} as any)
 const apiAuthRoute = apiAuthRouteImport.update({
   id: '/api/auth/$',
   path: '/api/auth/$',
@@ -117,11 +244,20 @@ const apiPaymentReturnRoute = apiPaymentReturnRouteImport.update({
   path: '/api/paiements/retour',
   getParentRoute: () => rootRouteImport,
 } as any)
+const accountOrderRoute = accountOrderRouteImport.update({
+  id: '/commandes/$orderId',
+  path: '/commandes/$orderId',
+  getParentRoute: () => accountLayoutRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof shopHomeRoute
+  '/admin': typeof adminLayoutRouteWithChildren
+  '/mon-compte': typeof accountLayoutRouteWithChildren
   '/robots.txt': typeof apiRobotsRoute
   '/sitemap.xml': typeof apiSitemapRoute
+  '/admin/': typeof adminOverviewRoute
+  '/mon-compte/': typeof accountOverviewRoute
   '/aide': typeof shopHelpRoute
   '/catalogue': typeof shopCatalogRoute
   '/commande': typeof shopCheckoutRoute
@@ -131,16 +267,36 @@ export interface FileRoutesByFullPath {
   '/favoris': typeof shopWishesRoute
   '/inscription': typeof shopSignUpRoute
   '/maison': typeof shopAboutRoute
+  '/admin/catalogue': typeof adminCatalogRoute
+  '/admin/clients': typeof adminCustomersRoute
+  '/admin/commandes': typeof adminOrdersRoute
+  '/admin/contenus': typeof adminContentRoute
+  '/admin/editeurs': typeof adminPublishersRoute
+  '/admin/livraisons': typeof adminDeliveriesRoute
+  '/admin/paiements': typeof adminPaymentsRoute
+  '/admin/parametres': typeof adminSettingsRoute
+  '/admin/stocks': typeof adminStocksRoute
+  '/mon-compte/adresses': typeof accountAddressesRoute
+  '/mon-compte/aide': typeof accountSupportRoute
+  '/mon-compte/commandes': typeof accountOrdersRoute
+  '/mon-compte/favoris': typeof accountWishesRoute
+  '/mon-compte/profil': typeof accountProfileRoute
   '/commande/$orderId': typeof shopConfirmationRoute
   '/livres/$bookId': typeof shopBookRoute
   '/paiement/$orderId': typeof shopPaymentRoute
+  '/admin/catalogue/$bookId': typeof adminBookRoute
+  '/admin/clients/$customerId': typeof adminCustomerRoute
+  '/admin/commandes/$orderId': typeof adminOrderRoute
   '/api/auth/$': typeof apiAuthRoute
   '/api/paiements/retour': typeof apiPaymentReturnRoute
+  '/mon-compte/commandes/$orderId': typeof accountOrderRoute
 }
 export interface FileRoutesByTo {
   '/robots.txt': typeof apiRobotsRoute
   '/sitemap.xml': typeof apiSitemapRoute
   '/': typeof shopHomeRoute
+  '/admin': typeof adminOverviewRoute
+  '/mon-compte': typeof accountOverviewRoute
   '/aide': typeof shopHelpRoute
   '/catalogue': typeof shopCatalogRoute
   '/commande': typeof shopCheckoutRoute
@@ -150,18 +306,40 @@ export interface FileRoutesByTo {
   '/favoris': typeof shopWishesRoute
   '/inscription': typeof shopSignUpRoute
   '/maison': typeof shopAboutRoute
+  '/admin/catalogue': typeof adminCatalogRoute
+  '/admin/clients': typeof adminCustomersRoute
+  '/admin/commandes': typeof adminOrdersRoute
+  '/admin/contenus': typeof adminContentRoute
+  '/admin/editeurs': typeof adminPublishersRoute
+  '/admin/livraisons': typeof adminDeliveriesRoute
+  '/admin/paiements': typeof adminPaymentsRoute
+  '/admin/parametres': typeof adminSettingsRoute
+  '/admin/stocks': typeof adminStocksRoute
+  '/mon-compte/adresses': typeof accountAddressesRoute
+  '/mon-compte/aide': typeof accountSupportRoute
+  '/mon-compte/commandes': typeof accountOrdersRoute
+  '/mon-compte/favoris': typeof accountWishesRoute
+  '/mon-compte/profil': typeof accountProfileRoute
   '/commande/$orderId': typeof shopConfirmationRoute
   '/livres/$bookId': typeof shopBookRoute
   '/paiement/$orderId': typeof shopPaymentRoute
+  '/admin/catalogue/$bookId': typeof adminBookRoute
+  '/admin/clients/$customerId': typeof adminCustomerRoute
+  '/admin/commandes/$orderId': typeof adminOrderRoute
   '/api/auth/$': typeof apiAuthRoute
   '/api/paiements/retour': typeof apiPaymentReturnRoute
+  '/mon-compte/commandes/$orderId': typeof accountOrderRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_shop': typeof shopLayoutRouteWithChildren
+  '/admin': typeof adminLayoutRouteWithChildren
+  '/mon-compte': typeof accountLayoutRouteWithChildren
   '/robots.txt': typeof apiRobotsRoute
   '/sitemap.xml': typeof apiSitemapRoute
   '/_shop/': typeof shopHomeRoute
+  '/admin/': typeof adminOverviewRoute
+  '/mon-compte/': typeof accountOverviewRoute
   '/_shop/aide': typeof shopHelpRoute
   '/_shop/catalogue': typeof shopCatalogRoute
   '/_shop/commande': typeof shopCheckoutRoute
@@ -171,18 +349,40 @@ export interface FileRoutesById {
   '/_shop/favoris': typeof shopWishesRoute
   '/_shop/inscription': typeof shopSignUpRoute
   '/_shop/maison': typeof shopAboutRoute
+  '/admin/catalogue': typeof adminCatalogRoute
+  '/admin/clients': typeof adminCustomersRoute
+  '/admin/commandes': typeof adminOrdersRoute
+  '/admin/contenus': typeof adminContentRoute
+  '/admin/editeurs': typeof adminPublishersRoute
+  '/admin/livraisons': typeof adminDeliveriesRoute
+  '/admin/paiements': typeof adminPaymentsRoute
+  '/admin/parametres': typeof adminSettingsRoute
+  '/admin/stocks': typeof adminStocksRoute
+  '/mon-compte/adresses': typeof accountAddressesRoute
+  '/mon-compte/aide': typeof accountSupportRoute
+  '/mon-compte/commandes': typeof accountOrdersRoute
+  '/mon-compte/favoris': typeof accountWishesRoute
+  '/mon-compte/profil': typeof accountProfileRoute
   '/_shop/commande/$orderId': typeof shopConfirmationRoute
   '/_shop/livres/$bookId': typeof shopBookRoute
   '/_shop/paiement/$orderId': typeof shopPaymentRoute
+  '/admin/catalogue/$bookId': typeof adminBookRoute
+  '/admin/clients/$customerId': typeof adminCustomerRoute
+  '/admin/commandes/$orderId': typeof adminOrderRoute
   '/api/auth/$': typeof apiAuthRoute
   '/api/paiements/retour': typeof apiPaymentReturnRoute
+  '/mon-compte/commandes/$orderId': typeof accountOrderRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/admin'
+    | '/mon-compte'
     | '/robots.txt'
     | '/sitemap.xml'
+    | '/admin/'
+    | '/mon-compte/'
     | '/aide'
     | '/catalogue'
     | '/commande'
@@ -192,16 +392,36 @@ export interface FileRouteTypes {
     | '/favoris'
     | '/inscription'
     | '/maison'
+    | '/admin/catalogue'
+    | '/admin/clients'
+    | '/admin/commandes'
+    | '/admin/contenus'
+    | '/admin/editeurs'
+    | '/admin/livraisons'
+    | '/admin/paiements'
+    | '/admin/parametres'
+    | '/admin/stocks'
+    | '/mon-compte/adresses'
+    | '/mon-compte/aide'
+    | '/mon-compte/commandes'
+    | '/mon-compte/favoris'
+    | '/mon-compte/profil'
     | '/commande/$orderId'
     | '/livres/$bookId'
     | '/paiement/$orderId'
+    | '/admin/catalogue/$bookId'
+    | '/admin/clients/$customerId'
+    | '/admin/commandes/$orderId'
     | '/api/auth/$'
     | '/api/paiements/retour'
+    | '/mon-compte/commandes/$orderId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/robots.txt'
     | '/sitemap.xml'
     | '/'
+    | '/admin'
+    | '/mon-compte'
     | '/aide'
     | '/catalogue'
     | '/commande'
@@ -211,17 +431,39 @@ export interface FileRouteTypes {
     | '/favoris'
     | '/inscription'
     | '/maison'
+    | '/admin/catalogue'
+    | '/admin/clients'
+    | '/admin/commandes'
+    | '/admin/contenus'
+    | '/admin/editeurs'
+    | '/admin/livraisons'
+    | '/admin/paiements'
+    | '/admin/parametres'
+    | '/admin/stocks'
+    | '/mon-compte/adresses'
+    | '/mon-compte/aide'
+    | '/mon-compte/commandes'
+    | '/mon-compte/favoris'
+    | '/mon-compte/profil'
     | '/commande/$orderId'
     | '/livres/$bookId'
     | '/paiement/$orderId'
+    | '/admin/catalogue/$bookId'
+    | '/admin/clients/$customerId'
+    | '/admin/commandes/$orderId'
     | '/api/auth/$'
     | '/api/paiements/retour'
+    | '/mon-compte/commandes/$orderId'
   id:
     | '__root__'
     | '/_shop'
+    | '/admin'
+    | '/mon-compte'
     | '/robots.txt'
     | '/sitemap.xml'
     | '/_shop/'
+    | '/admin/'
+    | '/mon-compte/'
     | '/_shop/aide'
     | '/_shop/catalogue'
     | '/_shop/commande'
@@ -231,15 +473,35 @@ export interface FileRouteTypes {
     | '/_shop/favoris'
     | '/_shop/inscription'
     | '/_shop/maison'
+    | '/admin/catalogue'
+    | '/admin/clients'
+    | '/admin/commandes'
+    | '/admin/contenus'
+    | '/admin/editeurs'
+    | '/admin/livraisons'
+    | '/admin/paiements'
+    | '/admin/parametres'
+    | '/admin/stocks'
+    | '/mon-compte/adresses'
+    | '/mon-compte/aide'
+    | '/mon-compte/commandes'
+    | '/mon-compte/favoris'
+    | '/mon-compte/profil'
     | '/_shop/commande/$orderId'
     | '/_shop/livres/$bookId'
     | '/_shop/paiement/$orderId'
+    | '/admin/catalogue/$bookId'
+    | '/admin/clients/$customerId'
+    | '/admin/commandes/$orderId'
     | '/api/auth/$'
     | '/api/paiements/retour'
+    | '/mon-compte/commandes/$orderId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   shopLayoutRoute: typeof shopLayoutRouteWithChildren
+  adminLayoutRoute: typeof adminLayoutRouteWithChildren
+  accountLayoutRoute: typeof accountLayoutRouteWithChildren
   apiRobotsRoute: typeof apiRobotsRoute
   apiSitemapRoute: typeof apiSitemapRoute
   apiAuthRoute: typeof apiAuthRoute
@@ -253,6 +515,20 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: '/'
       preLoaderRoute: typeof shopLayoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof adminLayoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mon-compte': {
+      id: '/mon-compte'
+      path: '/mon-compte'
+      fullPath: '/mon-compte'
+      preLoaderRoute: typeof accountLayoutRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/robots.txt': {
@@ -339,6 +615,118 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof shopAboutRouteImport
       parentRoute: typeof shopLayoutRoute
     }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof adminOverviewRouteImport
+      parentRoute: typeof adminLayoutRoute
+    }
+    '/admin/catalogue': {
+      id: '/admin/catalogue'
+      path: '/catalogue'
+      fullPath: '/admin/catalogue'
+      preLoaderRoute: typeof adminCatalogRouteImport
+      parentRoute: typeof adminLayoutRoute
+    }
+    '/admin/clients': {
+      id: '/admin/clients'
+      path: '/clients'
+      fullPath: '/admin/clients'
+      preLoaderRoute: typeof adminCustomersRouteImport
+      parentRoute: typeof adminLayoutRoute
+    }
+    '/admin/commandes': {
+      id: '/admin/commandes'
+      path: '/commandes'
+      fullPath: '/admin/commandes'
+      preLoaderRoute: typeof adminOrdersRouteImport
+      parentRoute: typeof adminLayoutRoute
+    }
+    '/admin/contenus': {
+      id: '/admin/contenus'
+      path: '/contenus'
+      fullPath: '/admin/contenus'
+      preLoaderRoute: typeof adminContentRouteImport
+      parentRoute: typeof adminLayoutRoute
+    }
+    '/admin/editeurs': {
+      id: '/admin/editeurs'
+      path: '/editeurs'
+      fullPath: '/admin/editeurs'
+      preLoaderRoute: typeof adminPublishersRouteImport
+      parentRoute: typeof adminLayoutRoute
+    }
+    '/admin/livraisons': {
+      id: '/admin/livraisons'
+      path: '/livraisons'
+      fullPath: '/admin/livraisons'
+      preLoaderRoute: typeof adminDeliveriesRouteImport
+      parentRoute: typeof adminLayoutRoute
+    }
+    '/admin/paiements': {
+      id: '/admin/paiements'
+      path: '/paiements'
+      fullPath: '/admin/paiements'
+      preLoaderRoute: typeof adminPaymentsRouteImport
+      parentRoute: typeof adminLayoutRoute
+    }
+    '/admin/parametres': {
+      id: '/admin/parametres'
+      path: '/parametres'
+      fullPath: '/admin/parametres'
+      preLoaderRoute: typeof adminSettingsRouteImport
+      parentRoute: typeof adminLayoutRoute
+    }
+    '/admin/stocks': {
+      id: '/admin/stocks'
+      path: '/stocks'
+      fullPath: '/admin/stocks'
+      preLoaderRoute: typeof adminStocksRouteImport
+      parentRoute: typeof adminLayoutRoute
+    }
+    '/mon-compte/': {
+      id: '/mon-compte/'
+      path: '/'
+      fullPath: '/mon-compte/'
+      preLoaderRoute: typeof accountOverviewRouteImport
+      parentRoute: typeof accountLayoutRoute
+    }
+    '/mon-compte/adresses': {
+      id: '/mon-compte/adresses'
+      path: '/adresses'
+      fullPath: '/mon-compte/adresses'
+      preLoaderRoute: typeof accountAddressesRouteImport
+      parentRoute: typeof accountLayoutRoute
+    }
+    '/mon-compte/aide': {
+      id: '/mon-compte/aide'
+      path: '/aide'
+      fullPath: '/mon-compte/aide'
+      preLoaderRoute: typeof accountSupportRouteImport
+      parentRoute: typeof accountLayoutRoute
+    }
+    '/mon-compte/commandes': {
+      id: '/mon-compte/commandes'
+      path: '/commandes'
+      fullPath: '/mon-compte/commandes'
+      preLoaderRoute: typeof accountOrdersRouteImport
+      parentRoute: typeof accountLayoutRoute
+    }
+    '/mon-compte/favoris': {
+      id: '/mon-compte/favoris'
+      path: '/favoris'
+      fullPath: '/mon-compte/favoris'
+      preLoaderRoute: typeof accountWishesRouteImport
+      parentRoute: typeof accountLayoutRoute
+    }
+    '/mon-compte/profil': {
+      id: '/mon-compte/profil'
+      path: '/profil'
+      fullPath: '/mon-compte/profil'
+      preLoaderRoute: typeof accountProfileRouteImport
+      parentRoute: typeof accountLayoutRoute
+    }
     '/_shop/commande/$orderId': {
       id: '/_shop/commande/$orderId'
       path: '/commande/$orderId'
@@ -360,6 +748,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof shopPaymentRouteImport
       parentRoute: typeof shopLayoutRoute
     }
+    '/admin/catalogue/$bookId': {
+      id: '/admin/catalogue/$bookId'
+      path: '/catalogue/$bookId'
+      fullPath: '/admin/catalogue/$bookId'
+      preLoaderRoute: typeof adminBookRouteImport
+      parentRoute: typeof adminLayoutRoute
+    }
+    '/admin/clients/$customerId': {
+      id: '/admin/clients/$customerId'
+      path: '/clients/$customerId'
+      fullPath: '/admin/clients/$customerId'
+      preLoaderRoute: typeof adminCustomerRouteImport
+      parentRoute: typeof adminLayoutRoute
+    }
+    '/admin/commandes/$orderId': {
+      id: '/admin/commandes/$orderId'
+      path: '/commandes/$orderId'
+      fullPath: '/admin/commandes/$orderId'
+      preLoaderRoute: typeof adminOrderRouteImport
+      parentRoute: typeof adminLayoutRoute
+    }
     '/api/auth/$': {
       id: '/api/auth/$'
       path: '/api/auth/$'
@@ -373,6 +782,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/api/paiements/retour'
       preLoaderRoute: typeof apiPaymentReturnRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/mon-compte/commandes/$orderId': {
+      id: '/mon-compte/commandes/$orderId'
+      path: '/commandes/$orderId'
+      fullPath: '/mon-compte/commandes/$orderId'
+      preLoaderRoute: typeof accountOrderRouteImport
+      parentRoute: typeof accountLayoutRoute
     }
   }
 }
@@ -413,8 +829,70 @@ const shopLayoutRouteWithChildren = shopLayoutRoute._addFileChildren(
   shopLayoutRouteChildren,
 )
 
+interface adminLayoutRouteChildren {
+  adminOverviewRoute: typeof adminOverviewRoute
+  adminCatalogRoute: typeof adminCatalogRoute
+  adminCustomersRoute: typeof adminCustomersRoute
+  adminOrdersRoute: typeof adminOrdersRoute
+  adminContentRoute: typeof adminContentRoute
+  adminPublishersRoute: typeof adminPublishersRoute
+  adminDeliveriesRoute: typeof adminDeliveriesRoute
+  adminPaymentsRoute: typeof adminPaymentsRoute
+  adminSettingsRoute: typeof adminSettingsRoute
+  adminStocksRoute: typeof adminStocksRoute
+  adminBookRoute: typeof adminBookRoute
+  adminCustomerRoute: typeof adminCustomerRoute
+  adminOrderRoute: typeof adminOrderRoute
+}
+
+const adminLayoutRouteChildren: adminLayoutRouteChildren = {
+  adminOverviewRoute: adminOverviewRoute,
+  adminCatalogRoute: adminCatalogRoute,
+  adminCustomersRoute: adminCustomersRoute,
+  adminOrdersRoute: adminOrdersRoute,
+  adminContentRoute: adminContentRoute,
+  adminPublishersRoute: adminPublishersRoute,
+  adminDeliveriesRoute: adminDeliveriesRoute,
+  adminPaymentsRoute: adminPaymentsRoute,
+  adminSettingsRoute: adminSettingsRoute,
+  adminStocksRoute: adminStocksRoute,
+  adminBookRoute: adminBookRoute,
+  adminCustomerRoute: adminCustomerRoute,
+  adminOrderRoute: adminOrderRoute,
+}
+
+const adminLayoutRouteWithChildren = adminLayoutRoute._addFileChildren(
+  adminLayoutRouteChildren,
+)
+
+interface accountLayoutRouteChildren {
+  accountOverviewRoute: typeof accountOverviewRoute
+  accountAddressesRoute: typeof accountAddressesRoute
+  accountSupportRoute: typeof accountSupportRoute
+  accountOrdersRoute: typeof accountOrdersRoute
+  accountWishesRoute: typeof accountWishesRoute
+  accountProfileRoute: typeof accountProfileRoute
+  accountOrderRoute: typeof accountOrderRoute
+}
+
+const accountLayoutRouteChildren: accountLayoutRouteChildren = {
+  accountOverviewRoute: accountOverviewRoute,
+  accountAddressesRoute: accountAddressesRoute,
+  accountSupportRoute: accountSupportRoute,
+  accountOrdersRoute: accountOrdersRoute,
+  accountWishesRoute: accountWishesRoute,
+  accountProfileRoute: accountProfileRoute,
+  accountOrderRoute: accountOrderRoute,
+}
+
+const accountLayoutRouteWithChildren = accountLayoutRoute._addFileChildren(
+  accountLayoutRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   shopLayoutRoute: shopLayoutRouteWithChildren,
+  adminLayoutRoute: adminLayoutRouteWithChildren,
+  accountLayoutRoute: accountLayoutRouteWithChildren,
   apiRobotsRoute: apiRobotsRoute,
   apiSitemapRoute: apiSitemapRoute,
   apiAuthRoute: apiAuthRoute,
