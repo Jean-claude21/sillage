@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import { hydrated } from './hydrated';
 import { readFileSync } from 'node:fs';
 
 // The two workspaces, signed in with the accounts the local seed creates from .env.
@@ -10,10 +11,12 @@ const env = Object.fromEntries(
 );
 
 async function signIn(page: Page, email: string, password: string) {
-  await page.goto('/connexion', { waitUntil: 'networkidle' });
+  await page.goto('/connexion', { waitUntil: 'load' });
+  await hydrated(page);
   await page.locator('[name=email]').first().fill(email);
   await page.locator('[name=password]').fill(password);
   await page.getByRole('button', { name: 'Me connecter' }).click();
+  await page.waitForURL(/\/(admin|mon-compte)$/);
 }
 
 const shot = (page: Page, name: string) => page.screenshot({ path: `review/${name}.png`, fullPage: true });
@@ -46,6 +49,38 @@ test('the team manages orders, stock and settings', async ({ page }) => {
     await expect(page.locator('.page-heading h1')).toBeVisible();
     await shot(page, name);
   }
+});
+
+test('the team chooses a cover image and the shop shows it', async ({ page, request }) => {
+  await signIn(page, env['ADMIN_EMAIL']!, env['ADMIN_PASSWORD']!);
+  await page.goto('/admin/catalogue/carnet-creatif', { waitUntil: 'load' });
+  await hydrated(page);
+  // A real picture, drawn by the browser: 600 × 880, a portrait cover.
+  const png = await page.evaluate(async () => {
+    const c = document.createElement('canvas');
+    c.width = 600;
+    c.height = 880;
+    const g = c.getContext('2d')!;
+    g.fillStyle = '#194e3d';
+    g.fillRect(0, 0, 600, 880);
+    g.fillStyle = '#f4cd65';
+    g.beginPath();
+    g.arc(300, 520, 160, 0, Math.PI * 2);
+    g.fill();
+    return c.toDataURL('image/png').split(',')[1]!;
+  });
+  await page.locator('#cover-file').setInputFiles({ name: 'couverture.png', mimeType: 'image/png', buffer: Buffer.from(png, 'base64') });
+  await expect(page.getByText('Image ajoutée.', { exact: false })).toBeVisible();
+  await shot(page, 'app-admin-cover');
+  await page.getByRole('button', { name: 'Enregistrer le livre' }).click();
+  await expect(page).toHaveURL(/\/admin\/catalogue$/);
+
+  await page.goto('/livres/carnet-creatif', { waitUntil: 'load' });
+  const src = await page.locator('.product-art img').getAttribute('src');
+  expect(src).toMatch(/^\/images\/couvertures\/[0-9a-f-]{36}\.(webp|jpg)$/);
+  const image = await request.get(src!);
+  expect(image.status()).toBe(200);
+  expect(image.headers()['content-type']).toMatch(/^image\/(webp|jpeg)$/);
 });
 
 test('a reader follows orders and manages the account', async ({ page }) => {

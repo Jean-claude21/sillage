@@ -15,6 +15,14 @@ export const env = {
   mailFrom: process.env.MAIL_FROM ?? 'Sillage <bonjour@sillage.example>',
   umamiWebsiteId: process.env.VITE_UMAMI_WEBSITE_ID ?? '',
   umamiHost: process.env.VITE_UMAMI_HOST ?? 'https://cloud.umami.is',
+  /** Neon object storage of the database's branch (covers). Empty locally: files go to .data/. */
+  storage: {
+    endpoint: process.env.STORAGE_ENDPOINT ?? '',
+    region: process.env.STORAGE_REGION ?? 'us-east-2',
+    bucket: process.env.STORAGE_BUCKET ?? 'covers',
+    accessKeyId: process.env.STORAGE_ACCESS_KEY_ID ?? '',
+    secretAccessKey: process.env.STORAGE_SECRET_ACCESS_KEY ?? '',
+  },
   seedDemo: process.env.SEED_DEMO === '1',
   adminEmail: process.env.ADMIN_EMAIL ?? '',
   adminPassword: process.env.ADMIN_PASSWORD ?? '',

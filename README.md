@@ -79,6 +79,9 @@ En ligne : **https://sillage-boutique.netlify.app** (site `sillage-boutique`, co
 La maquette reste sur `sillage-librairie.netlify.app`, inchangée.
 
 - **Base** : projet Neon `sillage` (région `aws-us-east-2`, à côté des fonctions Netlify), branche `main`.
+- **Couvertures** : Neon Storage, bucket privé `covers` de la même branche. L’équipe choisit une image
+  dans la fiche livre ; le navigateur la réduit (900 px de haut, WebP), le serveur vérifie type et
+  taille, l’enregistre sous une clé unique et la sert à `/images/couvertures/<clé>`.
 - **Variables** : posées sur le site Netlify ; copie dans `F:/programmation/perso/.secrets/sillage.env`
   (`DATABASE_URL`, `BETTER_AUTH_*`, `ADMIN_*`, `DEMO_CUSTOMER_PASSWORD`, `SEED_DEMO`, `PAYMENT_PROVIDER`,
   `VITE_DEMO_MODE`, `NETLIFY_SITE_ID`).

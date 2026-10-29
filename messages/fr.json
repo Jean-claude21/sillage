@@ -687,9 +687,7 @@
   "ws_cover_sub": "Visuel du livre dans la boutique.",
   "ws_cover_preview": "Aperçu de la couverture",
   "ws_cover_pick": "Choisir un visuel existant",
-  "ws_cover_custom": "Adresse personnalisée",
-  "ws_cover_url": "Adresse de l’image",
-  "ws_cover_note": "Collez l’adresse d’une couverture fournie par l’éditeur (format portrait, 300 × 440 px ou plus).",
+  "ws_cover_note": "JPG, PNG ou WebP, format portrait. L’image est réduite automatiquement avant l’envoi.",
   "ws_visibility": "Visibilité",
   "ws_visible_in_shop": "Visible dans la boutique",
   "ws_mark_new": "Marquer comme nouveauté",
@@ -871,5 +869,11 @@
   "ws_faq_track": "Comment suivre ma livraison ?",
   "ws_faq_track_body": "Ouvrez la commande concernée : les étapes et le créneau de passage sont affichés dans le suivi.",
   "ws_faq_who": "Qui livre les livres ?",
-  "ws_faq_who_body": "La librairie organise ses livraisons avec sa propre équipe, à Lomé et dans tout le Togo."
+  "ws_faq_who_body": "La librairie organise ses livraisons avec sa propre équipe, à Lomé et dans tout le Togo.",
+  "ws_cover_choose": "Choisir une image",
+  "ws_cover_uploading": "Envoi de l’image…",
+  "ws_cover_uploaded": "Image ajoutée. Enregistrez le livre pour la publier.",
+  "ws_cover_invalid": "Ce fichier n’est pas une image utilisable (JPG, PNG ou WebP, 15 Mo au plus).",
+  "ws_cover_failed": "L’image n’a pas pu être envoyée. Réessayez.",
+  "ws_cover_own": "Image choisie pour ce livre"
 }

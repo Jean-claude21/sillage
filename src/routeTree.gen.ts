@@ -48,6 +48,7 @@ import { Route as adminCustomerRouteImport } from './routes/admin/customer'
 import { Route as adminOrderRouteImport } from './routes/admin/order'
 import { Route as apiAuthRouteImport } from './routes/api/auth'
 import { Route as apiPaymentReturnRouteImport } from './routes/api/payment-return'
+import { Route as apiCoverRouteImport } from './routes/api/cover'
 import { Route as accountOrderRouteImport } from './routes/account/order'
 
 const shopLayoutRoute = shopLayoutRouteImport.update({
@@ -244,6 +245,11 @@ const apiPaymentReturnRoute = apiPaymentReturnRouteImport.update({
   path: '/api/paiements/retour',
   getParentRoute: () => rootRouteImport,
 } as any)
+const apiCoverRoute = apiCoverRouteImport.update({
+  id: '/images/couvertures/$key',
+  path: '/images/couvertures/$key',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const accountOrderRoute = accountOrderRouteImport.update({
   id: '/commandes/$orderId',
   path: '/commandes/$orderId',
@@ -289,6 +295,7 @@ export interface FileRoutesByFullPath {
   '/admin/commandes/$orderId': typeof adminOrderRoute
   '/api/auth/$': typeof apiAuthRoute
   '/api/paiements/retour': typeof apiPaymentReturnRoute
+  '/images/couvertures/$key': typeof apiCoverRoute
   '/mon-compte/commandes/$orderId': typeof accountOrderRoute
 }
 export interface FileRoutesByTo {
@@ -328,6 +335,7 @@ export interface FileRoutesByTo {
   '/admin/commandes/$orderId': typeof adminOrderRoute
   '/api/auth/$': typeof apiAuthRoute
   '/api/paiements/retour': typeof apiPaymentReturnRoute
+  '/images/couvertures/$key': typeof apiCoverRoute
   '/mon-compte/commandes/$orderId': typeof accountOrderRoute
 }
 export interface FileRoutesById {
@@ -371,6 +379,7 @@ export interface FileRoutesById {
   '/admin/commandes/$orderId': typeof adminOrderRoute
   '/api/auth/$': typeof apiAuthRoute
   '/api/paiements/retour': typeof apiPaymentReturnRoute
+  '/images/couvertures/$key': typeof apiCoverRoute
   '/mon-compte/commandes/$orderId': typeof accountOrderRoute
 }
 export interface FileRouteTypes {
@@ -414,6 +423,7 @@ export interface FileRouteTypes {
     | '/admin/commandes/$orderId'
     | '/api/auth/$'
     | '/api/paiements/retour'
+    | '/images/couvertures/$key'
     | '/mon-compte/commandes/$orderId'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -453,6 +463,7 @@ export interface FileRouteTypes {
     | '/admin/commandes/$orderId'
     | '/api/auth/$'
     | '/api/paiements/retour'
+    | '/images/couvertures/$key'
     | '/mon-compte/commandes/$orderId'
   id:
     | '__root__'
@@ -495,6 +506,7 @@ export interface FileRouteTypes {
     | '/admin/commandes/$orderId'
     | '/api/auth/$'
     | '/api/paiements/retour'
+    | '/images/couvertures/$key'
     | '/mon-compte/commandes/$orderId'
   fileRoutesById: FileRoutesById
 }
@@ -506,6 +518,7 @@ export interface RootRouteChildren {
   apiSitemapRoute: typeof apiSitemapRoute
   apiAuthRoute: typeof apiAuthRoute
   apiPaymentReturnRoute: typeof apiPaymentReturnRoute
+  apiCoverRoute: typeof apiCoverRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -783,6 +796,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof apiPaymentReturnRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/images/couvertures/$key': {
+      id: '/images/couvertures/$key'
+      path: '/images/couvertures/$key'
+      fullPath: '/images/couvertures/$key'
+      preLoaderRoute: typeof apiCoverRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/mon-compte/commandes/$orderId': {
       id: '/mon-compte/commandes/$orderId'
       path: '/commandes/$orderId'
@@ -897,6 +917,7 @@ const rootRouteChildren: RootRouteChildren = {
   apiSitemapRoute: apiSitemapRoute,
   apiAuthRoute: apiAuthRoute,
   apiPaymentReturnRoute: apiPaymentReturnRoute,
+  apiCoverRoute: apiCoverRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -1,4 +1,5 @@
 import { createServerFn } from '@tanstack/react-start';
+import { randomUUID } from 'node:crypto';
 import { eq, ne, and, sql } from 'drizzle-orm';
 import { z } from 'zod';
 import { requireArea } from '@/features/auth/session.server';
@@ -9,6 +10,7 @@ import * as m from '@/paraglide/messages.js';
 import { THEME_IDS } from './domain/themes';
 import { findBook, listBooks, listPublishers } from './infrastructure/catalog.queries';
 import { books, publishers } from './infrastructure/catalog.table';
+import { saveCover } from './infrastructure/cover-store';
 
 export const fetchAdminCatalog = createServerFn({ method: 'GET' }).handler(async () => {
   await requireArea('catalog').catch(() => requireArea('stocks'));
@@ -106,6 +108,29 @@ export const savePublisher = createServerFn({ method: 'POST' })
       position: all.length,
     });
     return { ok: true as const };
+  });
+
+const COVER_TYPES = { 'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp' } as const;
+export const MAX_COVER_BYTES = 3 * 1024 * 1024;
+
+/**
+ * Stores a cover chosen by the team and returns its address, to save in the book's form.
+ * The browser has already reduced the picture; the server checks its type and size again.
+ */
+export const uploadCover = createServerFn({ method: 'POST' })
+  .validator(
+    z.object({
+      contentType: z.enum(Object.keys(COVER_TYPES) as [keyof typeof COVER_TYPES, ...(keyof typeof COVER_TYPES)[]]),
+      base64: z.string().min(1).max(Math.ceil((MAX_COVER_BYTES * 4) / 3) + 4),
+    }),
+  )
+  .handler(async ({ data }) => {
+    await requireArea('catalog');
+    const bytes = Buffer.from(data.base64, 'base64');
+    if (bytes.byteLength === 0 || bytes.byteLength > MAX_COVER_BYTES) return { ok: false as const };
+    const key = `${randomUUID()}.${COVER_TYPES[data.contentType]}`;
+    await saveCover(key, new Uint8Array(bytes), data.contentType);
+    return { ok: true as const, url: `/images/couvertures/${key}` };
   });
 
 /** Whether a publisher can be removed: only when no book refers to it. */

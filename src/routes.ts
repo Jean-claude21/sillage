@@ -43,6 +43,7 @@ export const routes = rootRoute('__root.tsx', [
   ]),
   route('/api/auth/$', 'api/auth.ts'),
   route('/api/paiements/retour', 'api/payment-return.ts'),
+  route('/images/couvertures/$key', 'api/cover.ts'),
   route('/sitemap.xml', 'api/sitemap.ts'),
   route('/robots.txt', 'api/robots.ts'),
 ]);

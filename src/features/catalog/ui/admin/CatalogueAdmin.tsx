@@ -1,13 +1,14 @@
 import { Link, useNavigate, useRouter } from '@tanstack/react-router';
-import { useState, type FormEvent } from 'react';
+import { useRef, useState, type FormEvent } from 'react';
 import { WIcon } from '@/lib/icons';
 import { fold, formatXof } from '@/lib/text';
 import { toast } from '@/lib/toast';
 import * as m from '@/paraglide/messages.js';
 import { ContentHead, Empty, Panel, SearchInput, SelectFilter } from '@/features/workspace/ui/parts';
-import { saveBook, saveStock } from '../../admin-functions';
+import { saveBook, saveStock, uploadCover } from '../../admin-functions';
 import { coverUrl, type Book, type Publisher } from '../../domain/book';
 import { THEME_IDS, themeLabel } from '../../domain/themes';
+import { prepareCover } from './prepare-cover';
 
 function StockBadge({ book }: { book: Book }) {
   return (
@@ -191,6 +192,35 @@ export function BookEdit({ book, publishers, covers }: { book: Book | null; publ
   const isNew = !book;
   const [cover, setCover] = useState(book?.cover ?? covers[0]?.cover ?? '');
   const [busy, setBusy] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [preview, setPreview] = useState<string | null>(null);
+  const fileInput = useRef<HTMLInputElement>(null);
+
+  /** Reduces the chosen picture in the browser, stores it, and keeps its address for the form. */
+  async function pick(file: File | undefined) {
+    if (!file) return;
+    setUploading(true);
+    try {
+      const prepared = await prepareCover(file).catch(() => null);
+      if (!prepared) {
+        toast(m.ws_cover_invalid());
+        return;
+      }
+      const result = await uploadCover({ data: { contentType: prepared.contentType, base64: prepared.base64 } });
+      if (!result.ok) {
+        toast(m.ws_cover_invalid());
+        return;
+      }
+      setCover(result.url);
+      setPreview(prepared.preview);
+      toast(m.ws_cover_uploaded());
+    } catch {
+      toast(m.ws_cover_failed());
+    } finally {
+      setUploading(false);
+      if (fileInput.current) fileInput.current.value = '';
+    }
+  }
 
   async function submit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -216,7 +246,7 @@ export function BookEdit({ book, publishers, covers }: { book: Book | null; publ
           isbn: get('isbn'),
           description: get('description'),
           excerpt: get('excerpt'),
-          cover: get('cover') || cover,
+          cover,
           active: data.has('active'),
           isNew: data.has('new'),
           inSelection: data.has('selection'),
@@ -318,7 +348,7 @@ export function BookEdit({ book, publishers, covers }: { book: Book | null; publ
               <Link to="/admin/catalogue" className="btn secondary">
                 {m.ws_cancel()}
               </Link>
-              <button className="btn" type="submit" disabled={busy}>
+              <button className="btn" type="submit" disabled={busy || uploading}>
                 <WIcon name="check" />
                 {m.ws_save_book()}
               </button>
@@ -327,12 +357,26 @@ export function BookEdit({ book, publishers, covers }: { book: Book | null; publ
           <div className="panel-stack">
             <Panel title={m.ws_cover()} sub={m.ws_cover_sub()}>
               <div className="cover-preview">
-                <img src={coverUrl(cover)} alt={m.ws_cover_preview()} width="146" height="215" />
+                <img src={preview ?? coverUrl(cover)} alt={m.ws_cover_preview()} width="146" height="215" />
               </div>
-              <label className="field">
+              <input type="hidden" name="cover" value={cover} />
+              <input ref={fileInput} id="cover-file" type="file" accept="image/jpeg,image/png,image/webp,image/avif,image/heic" className="sr-only" onChange={(e) => void pick(e.target.files?.[0])} />
+              <button type="button" className="btn secondary" style={{ width: '100%' }} disabled={uploading} onClick={() => fileInput.current?.click()}>
+                <WIcon name="download" />
+                {uploading ? m.ws_cover_uploading() : m.ws_cover_choose()}
+              </button>
+              <p className="progress-note">{m.ws_cover_note()}</p>
+              <label className="field section-gap">
                 {m.ws_cover_pick()}
-                <select value={covers.some((c) => c.cover === cover) ? cover : ''} onChange={(e) => e.target.value && setCover(e.target.value)}>
-                  <option value="">{m.ws_cover_custom()}</option>
+                <select
+                  value={covers.some((c) => c.cover === cover) ? cover : ''}
+                  onChange={(e) => {
+                    if (!e.target.value) return;
+                    setCover(e.target.value);
+                    setPreview(null);
+                  }}
+                >
+                  <option value="">{m.ws_cover_own()}</option>
                   {covers.map((v) => (
                     <option key={v.cover} value={v.cover}>
                       {v.title}
@@ -340,11 +384,6 @@ export function BookEdit({ book, publishers, covers }: { book: Book | null; publ
                   ))}
                 </select>
               </label>
-              <label className="field">
-                {m.ws_cover_url()}
-                <input name="cover" value={cover} onChange={(e) => setCover(e.target.value)} placeholder="https://…" />
-              </label>
-              <p className="progress-note">{m.ws_cover_note()}</p>
             </Panel>
             <Panel title={m.ws_visibility()}>
               <label className="choice-row">
